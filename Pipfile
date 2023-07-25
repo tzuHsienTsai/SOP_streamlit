@@ -12,7 +12,6 @@ tiktoken = "*"
 tenacity = "*"
 Levenshtein = "*"
 nltk = "*"
-sklearn = "*"
 
 [dev-packages]
 
