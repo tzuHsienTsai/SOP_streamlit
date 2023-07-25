@@ -1,0 +1,30 @@
+<Question 1>
+The content delineated by triple backticks provides a description of a step within an SOP. Kindly identify the name assigned to this step, which should be a verb phrase comprising fewer than five words.
+```
+Today on the Stay at Home Chef, I'm showing you how to cook steak perfectly every time. This method works for any kind of steak and will help you achieve the perfect steak every single time. There's no need to be intimidated by cooking steak because it's actually super easy and I'm going to show you how. The first thing you need to do is pull your steaks out and let them sit at room temperature for at least 30 minutes. If you're using frozen steaks, you'll want to thaw them in the fridge first, but you do want them. To come to room temperature, and if you'll notice, we're using nice thick steaks. Thick steaks are actually easier to cook. Perfectly thin steaks will cook too fast and may even dry out. So choose a good thick steak. Today we're using a couple of New York strip steaks, but this same method works with rib eye or T-bone or even fillet. So choose a cut of steak that you like. You can see this steak has some nice marbling in it and some fat around the outside. There are actually three different grades of beef, Select, Choice, and prime, and it's all based on the marbling and flavor in the beef. Now, the difference between select and choice is actually pretty big, so I always recommend choosing at least Choice, grade or Prime grade beef when you're making steak. This is actually a choice grade New York steak.
+```
+</Question 1>
+<Answer 1>
+Pulling steaks out and letting them sit at room temperature.
+</Answer 1>
+<Question 2>
+The content delineated by triple backticks provides a description of a step within an SOP. Kindly identify the name assigned to this step, which should be a verb phrase comprising fewer than five words.
+```
+The first thing you do when you get to a drop zone is you want to make sure your gear is in good working order. And that starts of course with your rig. All right, these things are really simple. You got a main canopy down here, you have a reserve canopy in case something goes wrong up here, and you have a couple of handles. This is how you deploy your main canopy, and this handle is how you deploy your reserve in case you need it. And then this one, in case your main gets all tangled up, you can cut it away. This is your cut away handle. And of course you got to make sure you know what altitude you're at. So I wear an altimeter on my wrist like this, and I also have one that's in my helmet so that it beeps in my ear when I get to about 4500 feet because you don't want to deploy too late.
+```
+</Question 2>
+<Answer 2>
+Making sure your gear is in good working order.
+</Answer 2>
+<Question 3>
+The content delineated by triple backticks provides a description of a step within an SOP. Kindly identify the name assigned to this step, which should be a verb phrase comprising fewer than five words.
+```
+Now one of the most common causes is simple derailer adjustment on modern derailers with index shifting. The pulleys in the cage here should line up with the cog that the chain is on, and what happens is if the adjustment is slightly off to where the police are slightly off of, not in the line with the the COG there. Maybe it seemed in between two cogs that the chain especially. Their torque might try to jump to the next cog and then maybe back again and so you simply need to adjust the derailer. Have some videos that where they were adjusted derailers, but basically you're going to adjust the barrel adjuster here and adjust it so that the pulleys come over and line up with the cog that the chain is on and that will often solve the problem.
+```
+</Question 3>
+<Answer 3>
+Adjusting the derailer.
+</Answer 3>
+<Question 4>
+The content delineated by triple backticks provides a description of a step within an SOP. Kindly identify the name assigned to this step, which should be a verb phrase comprising fewer than five words.
+```

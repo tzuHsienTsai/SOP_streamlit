@@ -1,0 +1,25 @@
+{
+    "supported_lang": [
+        "en"
+    ],
+    "max_len": {
+        "ALI": {
+            "stage1_USE_max_len": 100,
+            "stage1_TEG_max_len": 20,
+            "stage2_ET_max_len": 50,
+            "stage3_USE_max_len": 250,
+            "MT5_max_len": 32,
+            "VIT_max_len": 8,
+            "FLAN_max_len": 4
+        },
+        "GCP": {
+            "stage1_USE_max_len": 150,
+            "stage1_TEG_max_len": 20,
+            "stage2_ET_max_len": 50,
+            "stage3_USE_max_len": 400,
+            "MT5_max_len": 128,
+            "VIT_max_len": 64,
+            "FLAN_max_len": 8
+        }
+    }
+}

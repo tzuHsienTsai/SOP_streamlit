@@ -1,0 +1,33 @@
+<Question 1>
+There are three text segments: segment A, segment B, and segment C:
+Segment A: Burns and Naryshkin have maintained a line of communication since the start of the Ukraine war at a time when other direct contacts between Moscow and Washington are at a minimum, with relations at their lowest point since the 1962 Cuban missile crisis.
+Segment B: This communication is absolutely necessary to maintain the peace of NANO and USSR. However, the world is quite nervious since this communication is at a minimum.
+Segment C: During that dinner party, I saw my father going around topping up everyone’s drinks. My mother brought out the food, its aroma preceding it. Everyone was gathered around having fun. That’s when it struck me – how community can be forged by food.
+Please determine whether segment A is more semantically related to segment B or segment C.
+</Question 1>
+<Answer 1>
+Segment A is more semantically related to segment B.
+</Answer 1>
+<Question 2>
+There are three text segments: segment A, segment B, and segment C:
+Segment A: “What happens here is important because what’s happening to us is happening across all fields of labor, when employers make Wall Street and greed their priority and they forget about the essential contributors that make the machine run,” she said.
+Segment B: Donald Trump’s son-in-law Jared Kushner was among several witnesses to testify before a grand jury in recent weeks about the former president’s efforts to overturn the 2020 election, US media reported on Thursday.
+Please determine whether segment A is more semantically related to segment B or segment C.
+Segment C: In a speech that was widely circulated on Thursday – particularly among many who did not know The Nanny star was heading up Sag-Aftra, Hollywood’s biggest union – Drescher said actors were being “marginalised, disrespected and dishonoured” by a business model that has been drastically changed by streaming and artificial intelligence.
+Please determine whether segment A is more semantically related to segment B or segment C.
+</Question 2>
+<Answer 2>
+Segment A is more semantically related to segment C.
+</Answer 2>
+<Question 3>
+There are three text segments: segment A, segment B, and segment C:
+Segment A: Despite his best efforts, Taran didn’t make a good first impression on Cleo. “I thought he was a bit of a try-hard and sucking up to everyone,” she says. “Looking back, I was a bit harsh. He was a really nice, genuine person.”
+Segment B: For the rest of the first year they remained casual acquaintances, but at the start of the second year their friendship groups merged and the two students started hanging out more frequently. Taran says: “We both really like reading, so she got me a book by William Blake for my birthday.”
+Segment C: In 2022, they went to Madrid and still hope to go to Cuba. “We describe each other as brothers – I don’t have any siblings but Taran is as close as I’ll ever get,” says Cleo. “If we haven’t seen each other for a while, I start to feel uneasy. I feel grounded again after we set the world to rights.”
+Please determine whether segment A is more semantically related to segment B or segment C.
+</Question 3>
+<Answer 3>
+Segment A is more semantically related to segment B.
+</Answer 3>
+<Question 4>
+There are three text segments: segment A, segment B, and segment C:

@@ -1,0 +1,100 @@
+<Question 1>
+Below are the steps of the process, enclosed by triple backticks. Please generate the flowchart for this process using the format of mermaid.js.
+```
+Step 1: Sear the filet of beef in a hot pan.
+Step 2: Use the side of the pan to sear the beef.
+Step 3: Brush English mustard or horseradish on the beef.
+Step 4: Let the beef rest while preparing the filling.
+```
+</Question 1>
+<Answer 1>
+graph TD
+A[Start]
+B[Sear the filet of beef in a hot pan]
+C[Use the side of the pan to sear the beef]
+D[Brush English mustard or horseradish on the beef]
+E[Let the beef rest while preparing the filling]
+F[End)
+
+A --> B
+B --> C
+C --> D
+D --> E
+E --> F
+</Answer 1>
+<Question 2>
+Below are the steps of the process, enclosed by triple backticks. Please generate the flowchart for this process using the format of mermaid.js.
+```
+Step 1: Gather the kitchen utensils.
+Step 2: Crack the eggs.
+Step 3: Mix the eggs.
+Step 4: Wash and slice the lettuce.
+Step 5: Fried the eggs and lettuce together in a pan.
+Step 6: Season the food in the pan.
+Step 7: Serve the dish.
+```
+</Question 2>
+graph TD
+A[Start]
+B[Gather the kitchen utensils]
+C[Crack the eggs]
+D[Mix the eggs]
+E[Wash and slice the lettuce]
+F[Fried the eggs and lettuce together in a pan]
+G[Season the food in the pan]
+H[Serve the dish]
+I[End]
+
+A --> B
+B --> C
+C --> D
+B --> E
+D --> F
+E --> F
+F --> G
+G --> H
+H --> I
+</Answer 2>
+<Question 3>
+Below are the steps of the process, enclosed by triple backticks. Please generate the flowchart for this process using the format of mermaid.js.
+```
+Step 1: Read the recipe for steak and smash potato.
+Step 2: Gather the kitchen utensils.
+Step 3: Unfrozen the steak.
+Step 4: Sear the surface of the steak.
+Step 5: Prepare potato.
+Step 6: Steam the potato.
+Step 7: Smash the potato.
+Step 8: Put the steak and smash potato on the same plate.
+Step 9: Serve the dish.
+```
+</Question 3>
+<Answer 3>
+graph TD
+A[Start]
+B[Read the recipe for steak and smash potato]
+C[Gather the kitchen utensils]
+D[Unfrozen the steak]
+E[Sear the surface of the steak]
+F[Prepare potato]
+G[Steam the potato]
+H[Smash the potato]
+I[Put the steak and smash potato on the same plate]
+J[Serve the dish]
+K[End]
+
+A --> B
+B --> C
+C --> D
+D --> E
+C --> F
+F --> G
+G --> H
+E --> I
+H --> I
+I --> J
+J --> K
+</Answer 3>
+<Question 4>
+Below are the steps of the process, enclosed by triple backticks. Please generate the flowchart for this process using the format of mermaid.js.
+```

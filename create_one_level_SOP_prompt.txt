@@ -1,0 +1,68 @@
+<Question 1>
+The article delimited by triple backticks describes a workflow with multiple steps. Please outline the steps in the subsequent format:
+
+Step 1:...
+Step 2:...
+...
+Step N:...
+
+The content should only include the information and content presented within this article. Each step should contain less than ten words.
+```
+Now one of the most common causes is simple derailer adjustment on modern derailers with index shifting. The pulleys in the cage here should line up with the cog that the chain is on, and what happens is if the adjustment is slightly off to where the police are slightly off of, not in the line with the the COG there. Maybe it seemed in between two cogs that the chain especially. Their torque might try to jump to the next cog and then maybe back again and so you simply need to adjust the derailer. Have some videos that where they were adjusted derailers, but basically you're going to adjust the barrel adjuster here and adjust it so that the pulleys come over and line up with the cog that the chain is on and that will often solve the problem.
+```
+</Question 1>
+<Answer 1>
+Step 1: Check if the pulleys in the derailer cage are lined up with the cog.
+Step 2: If the pulleys are slightly off, adjust the derailer.
+Step 3: Use the barrel adjuster to align the pulleys with the cog.
+Step 4: Ensure the pulleys line up with the chain.
+</Answer 1>
+<Question 2>
+The article delimited by triple backticks describes a workflow with multiple steps. Please outline the steps in the subsequent format:
+
+Step 1:...
+Step 2:...
+...
+Step N:...
+
+The content should only include the information and content presented within this article. Each step should contain less than ten words.
+```
+Today on the Stay at Home Chef, I'm showing you how to cook steak perfectly every time. This method works for any kind of steak and will help you achieve the perfect steak every single time. There's no need to be intimidated by cooking steak because it's actually super easy and I'm going to show you how. The first thing you need to do is pull your steaks out and let them sit at room temperature for at least 30 minutes. If you're using frozen steaks, you'll want to thaw them in the fridge first, but you do want them. To come to room temperature, and if you'll notice, we're using nice thick steaks. Thick steaks are actually easier to cook. Perfectly thin steaks will cook too fast and may even dry out. So choose a good thick steak. Today we're using a couple of New York strip steaks, but this same method works with rib eye or T-bone or even fillet. So choose a cut of steak that you like. You can see this steak has some nice marbling in it and some fat around the outside. There are actually three different grades of beef, Select, Choice, and prime, and it's all based on the marbling and flavor in the beef. Now, the difference between select and choice is actually pretty big, so I always recommend choosing at least Choice, grade or Prime grade beef when you're making steak. This is actually a choice grade New York steak.
+```
+</Question 2>
+<Answer 2>
+Step 1: Let the steaks sit at room temperature for 30 minutes.
+Step 2: Thaw frozen steaks in the fridge beforehand.
+Step 3: Choose thick steaks for easier and more even cooking.
+Step 4: Select a cut of steak with marbling and fat.
+Step 5: Consider choosing at least Choice or Prime grade beef.
+</Answer 2>
+<Question 3>
+The article delimited by triple backticks describes a workflow with multiple steps. Please outline the steps in the subsequent format:
+
+Step 1:...
+Step 2:...
+...
+Step N:...
+
+The content should only include the information and content presented within this article. Each step should contain less than ten words.
+```
+Now I'll demonstrate how the pan should be hot when frying something. So, what's called a hot pan? Let me show you. I'll open it. Then we pour in the oil. Did you see how beautiful the oil temperature is? Many people think that when the oil comes out, the pan is ready. But actually, the real readiness of the pan is like this. Can you see the smoke? When it smokes, it means the pan is ready. At this point, we reduce the heat a little. Okay, after the pan is ready, we start. Crack the eggs into it. Oh. Yes, right. Yes, right. Basically, once the pan is ready, when you fry this, it won't stick to the pan. Just lightly move it around. It won't stick. Just give it a gentle shake. Shake it left and right. Wherever you want it to go, it will go. Relax, you don't have to worry about sticking to the pan. Okay, let's go. Thank you, squad leader. It's that simple. It won't stick to the pan at all. The principle is very simple. When the pan reaches a certain high temperature, when you crack the egg in, the water vapor instantly evaporates, forming a layer of steam between the pan and the egg. That's the basic principle of non-stick pan. Because I like the crispy part, I added a little bit of glue to the skin. That's all. Neat and clean, effortlessly. Alright, that's it. We completed this simple non-stick fried egg easily.
+```
+</Question 3>
+<Answer 3>
+Step 1: Heat the pan until it starts to smoke.
+Step 2: Crack the eggs into the hot pan.
+Step 3: Move the eggs around in the pan without sticking.
+Step 4: The eggs will cook without sticking to the pan.
+</Answer 3>
+<Question 4>
+The article delimited by triple backticks describes a workflow with multiple steps. Please outline the steps in the subsequent format:
+
+Step 1:...
+Step 2:...
+...
+Step N:...
+
+The content should only include the information and content presented within this article. Each step should contain less than ten words.
+```
