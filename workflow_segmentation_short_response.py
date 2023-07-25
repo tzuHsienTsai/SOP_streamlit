@@ -226,8 +226,8 @@ def trans_preprocessing(transcription:str) -> str:
 def streamlit_interface():
 	st.title("Workflow Segmentation Demo Site (English Version)")
 	st.header("Transcription")
-	st.write("The period in the transcription should be followed with a blank space or a new line.\n For example: ")
-	st.code("My name is Alan. I an a student.")
+	st.write("The period in the transcription should be followed by either a blank space or a new line.\n For example: ")
+	st.code("My name is Alan. I am a student.")
 	st.write("and")
 	st.code("My name is Alan.\nI am a student.")
 	st.write("are both valid inputs; however, ")
