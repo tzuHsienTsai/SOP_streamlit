@@ -7,7 +7,7 @@ from Levenshtein import distance
 from tenacity import retry, stop_after_attempt, wait_exponential
 import nltk
 import argparse
-from old_segmentation import segmentation
+#from old_segmentation import segmentation
 nltk.download('punkt')
 from nltk.tokenize import sent_tokenize, word_tokenize
 

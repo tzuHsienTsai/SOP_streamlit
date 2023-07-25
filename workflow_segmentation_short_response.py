@@ -4,12 +4,14 @@ import sys
 from tqdm import tqdm
 import os
 import time
+import streamlit as st
 from Levenshtein import distance
 from tenacity import retry, stop_after_attempt, wait_exponential
-from utils import get_args, count_the_number_of_tokens, count_the_length_of_prompt, levenshtein_distance, reverse_string, merge_segments_gpt_version, merge_segments_text_split_version, read_file
+from utils import get_args, count_the_number_of_tokens, count_the_length_of_prompt, levenshtein_distance, reverse_string, merge_segments_gpt_version, read_file
 import nltk
 import argparse
 from nltk.tokenize import sent_tokenize, word_tokenize
+from stqdm import stqdm
 #nltk.download('punkt')
 
 def find_the_longest_article_that_fits_the_len_limit_of_chatGPT(article:str, openai_model_type:str, acceptable_len_of_gpt_input:int) -> str:
@@ -161,19 +163,25 @@ def segment_article(article:str, openai_model_type:str, acceptable_len_of_gpt_in
 				idx += 1
 
 	global progress
+	global streamlit_progress
 	if len(segmentable_article.strip()) == len(article.strip()):
 		if prevent_long_segment == "YES":
 			progress.update(len(segmentable_article.strip()))
 			progress.set_description("Workflow segmentation")
+			streamlit_progress.update(len(segmentable_article.strip()))
+			streamlit_progress.set_description("Workflow segmentation")
 		return valid_segments
 	else:
 		if prevent_long_segment == "YES":
 			progress.update(len(article[:current_head].strip()))
 			progress.set_description("Workflow segmentation")
+			streamlit_progress.update(len(article[:current_head].strip()))
+			streamlit_progress.set_description("Workflow segmentation")
 		return valid_segments + segment_article(article[current_head:], openai_model_type, acceptable_len_of_gpt_input, prevent_long_segment, prevent_short_segment)
 
 
 progress = None
+streamlit_progress = None
 
 def segment_workflow(transcription:str, args) -> list:
 	acceptable_len_of_gpt_input = 4096
@@ -182,17 +190,72 @@ def segment_workflow(transcription:str, args) -> list:
 	elif args.gpt_model_type.endswith("4"):
 		acceptable_len_of_gpt_input = 8192
 	global progress
+	global streamlit_progress
 	progress = tqdm(total=len(transcription.strip()))
 	progress.set_description("Workflow segmentation")
+	streamlit_progress = stqdm(total=len(transcription.strip()))
+	streamlit_progress.set_description("Workflow segmentation")
 	return segment_article(transcription, args.gpt_model_type, acceptable_len_of_gpt_input, args.prevent_long_segment, args.prevent_short_segment)
 
+class arguments:
+	def __init__(self, gpt_model_type, prevent_long_segment, prevent_short_segment):
+		self.gpt_model_type = gpt_model_type
+		self.prevent_long_segment = prevent_long_segment
+		self.prevent_short_segment = prevent_short_segment
 
+def trans_preprocessing(transcription:str) -> str:
+	new_transcription = transcription.replace("\n", " ")
+	new_transcription = transcription.replace("  ", " ")
+
+	sentences = sent_tokenize(transcription)
+	sentence_len = -1
+	for sentence in sentences:
+		sentence_len += len(sentence) + 1
+	
+	if sentence_len == len(transcription):
+		return transcription
+	else:
+		new_transcription = ""
+		for sentence in sentences:
+			if len(new_transcription) > 0:
+				new_transcription += " "
+			new_transcription += sentence
+		return new_transcription
+
+
+def streamlit_interface():
+	st.title("Workflow Segmentation Demo Site (English Version)")
+	st.header("Transcription")
+	st.write("The period in the transcription should be followed with a blank space or a new line.\n For example: ")
+	st.code("My name is Alan. I an a student.")
+	st.write("and")
+	st.code("My name is Alan.\nI am a student.")
+	st.write("are both valid inputs; however, ")
+	st.code("My name is Alan.I am a student.")
+	st.write("is not a valid input.")
+	transcription = st.text_area("Input:")
+	transcription = trans_preprocessing(transcription)
+#	st.write(transcription)
+	start_running = st.button("Run")
+	if start_running:
+		args = arguments("gpt-3.5-turbo-16k", "YES", "YES")
+		segments = segment_workflow(transcription, args)
+		st.write("The number of segments are: " + str(len(segments)))
+		st.divider()
+		for segment in segments:
+			st.write(segment)
+			st.divider()
+#		st.write(args.gpt_model_type)
+#		st.write(args.prevent_long_segment)
+#		st.write(args.prevent_short_segment)
+	return
 
 if __name__ == "__main__":
 	openai.api_key = "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"
-
+	streamlit_interface()
+	exit()
+'''
 	args = get_args()
-
 # Choi dataset code
 	arg1 = "4k"
 	if args.gpt_model_type.endswith("16k"):
@@ -217,7 +280,7 @@ if __name__ == "__main__":
 #	print("Total time segmentation takes = " + str(time.time() - start_segmentation_time) + " secs.")
 #	print(segmented_transcript)
 '''
-
+'''
 	transcript_dir_path = args.dir_path
 	file_names = os.listdir(transcript_dir_path)
 #	file_names.reverse()
