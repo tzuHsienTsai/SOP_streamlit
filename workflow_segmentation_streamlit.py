@@ -239,10 +239,12 @@ def streamlit_interface():
 	start_running = st.button("Run")
 	if start_running:
 		args = arguments("gpt-3.5-turbo-16k", "YES", "YES")
+		start_time = time.time()
 		segments = segment_workflow(transcription, args)
 		st.write("The number of segments are: " + str(len(segments)))
 		global num_of_API_call
 		st.write("The number of API calls: " + str(num_of_API_call))
+		st.write("Execution time: " + str(time.time() - start_time) + " seconds.")
 		st.divider()
 		for segment in segments:
 			num_of_tokens = count_the_number_of_tokens(segment, "gpt-3.5-turbo-16k")
