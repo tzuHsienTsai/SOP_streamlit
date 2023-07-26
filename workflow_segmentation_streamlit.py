@@ -7,7 +7,7 @@ import time
 import streamlit as st
 from Levenshtein import distance
 from tenacity import retry, stop_after_attempt, wait_exponential
-from utils import get_args, count_the_number_of_tokens, count_the_length_of_prompt, levenshtein_distance, reverse_string, merge_segments_gpt_version, read_file
+from utils import get_args, count_the_number_of_tokens, count_the_length_of_prompt, levenshtein_distance, reverse_string, merge_segments_gpt_version, read_file, is_mandarin
 import nltk
 import argparse
 from nltk.tokenize import sent_tokenize, word_tokenize
@@ -70,9 +70,12 @@ def locate_segment_start(sentence_prefix:str, article:str) -> int:
 	best_score = len(sentence_prefix)
 	best_score_position = -1
 	head = 0
+	puncs = [".", "!", "?", "。", "！", "？"]
 	for start_index_of_article in range(len(article) - 1):
-		if start_index_of_article > 2 and article[start_index_of_article] == "." and article[start_index_of_article + 1] == " ":
-			head = start_index_of_article + 2
+		if start_index_of_article > 2 and article[start_index_of_article] in puncs:
+			head = start_index_of_article + 1
+			while article[head] == " ":
+				head += 1
 		current_score = levenshtein_distance(sentence_prefix, article[start_index_of_article:start_index_of_article + len(sentence_prefix)])
 		if current_score < best_score:
 			best_score = current_score
@@ -92,10 +95,12 @@ def extract_the_head_of_paragraphs(segmented_article:str) -> list:
 			sentences_prefix.append(prefix)
 	return sentences_prefix
 
-
+num_of_API_call = 0
 
 def segment_article(article:str, openai_model_type:str, acceptable_len_of_gpt_input:int, prevent_long_segment:str, prevent_short_segment:str)->list:
 	segmentable_article = find_the_longest_article_that_fits_the_len_limit_of_chatGPT(article, openai_model_type, acceptable_len_of_gpt_input)
+	global num_of_API_call
+	num_of_API_call += 1
 	segmented_article = segment_short_article(segmentable_article, openai_model_type, acceptable_len_of_gpt_input)
 	sentences_prefix = extract_the_head_of_paragraphs(segmented_article)
 #	if prevent_long_segment == "NO":
@@ -126,13 +131,14 @@ def segment_article(article:str, openai_model_type:str, acceptable_len_of_gpt_in
 		segment_idx = 0
 		while segment_idx < len(valid_segments):
 			segment = valid_segments[segment_idx]
-			if len(word_tokenize(segment)) > 700:
+			if (len(word_tokenize(segment)) > 700 and is_mandarin(segment.strip()) == False) or (len(segment) > 860 and is_mandarin(segment.strip()) == True):
 				split_once_more_segments = segment_article(segment,\
 														openai_model_type,\
 														acceptable_len_of_gpt_input,\
 														"NO",\
 														prevent_short_segment,\
 														)
+				num_of_API_call += 1
 				for idx in range(len(split_once_more_segments)):
 					while idx < len(split_once_more_segments)\
 							and len(split_once_more_segments[idx]) == 0:
@@ -144,7 +150,7 @@ def segment_article(article:str, openai_model_type:str, acceptable_len_of_gpt_in
 	if prevent_short_segment == "YES":
 		idx = 0
 		while idx < len(valid_segments) and len(valid_segments) > 1:
-			if len(word_tokenize(valid_segments[idx])) < 70 and len(word_tokenize(valid_segments[idx])) * 3 <= len(word_tokenize(segmentable_article)):
+			if (len(word_tokenize(valid_segments[idx])) < 70 and len(word_tokenize(valid_segments[idx])) * 3 <= len(word_tokenize(segmentable_article)) and is_mandarin(valid_segments[idx].strip()) == False) or (len(valid_segments[idx]) < 86 and len(valid_segments[idx]) * 3 <= len(segmentable_article) and is_mandarin(valid_segments[idx].strip()) == True):
 				if idx == 0:
 					new_segment = valid_segments[idx] + " " + valid_segments[1]
 					valid_segments = [new_segment] + valid_segments[2:]
@@ -159,6 +165,7 @@ def segment_article(article:str, openai_model_type:str, acceptable_len_of_gpt_in
 #																)
 																openai_model_type)
 					valid_segments = valid_segments[:idx - 1] + merge_result + valid_segments[idx + 2:]
+					num_of_API_call += 1
 			else:
 				idx += 1
 
@@ -224,15 +231,8 @@ def trans_preprocessing(transcription:str) -> str:
 
 
 def streamlit_interface():
-	st.title("Workflow Segmentation Demo Site (English Version)")
+	st.title("Workflow Segmentation Demo Site (English and Mandarin Version)")
 	st.header("Transcription")
-	st.write("The period in the transcription should be followed by either a blank space or a new line.\n For example: ")
-	st.code("My name is Alan. I am a student.")
-	st.write("and")
-	st.code("My name is Alan.\nI am a student.")
-	st.write("are both valid inputs; however, ")
-	st.code("My name is Alan.I am a student.")
-	st.write("is not a valid input.")
 	transcription = st.text_area("Input:")
 	transcription = trans_preprocessing(transcription)
 #	st.write(transcription)
@@ -241,8 +241,15 @@ def streamlit_interface():
 		args = arguments("gpt-3.5-turbo-16k", "YES", "YES")
 		segments = segment_workflow(transcription, args)
 		st.write("The number of segments are: " + str(len(segments)))
+		global num_of_API_call
+		st.write("The number of API calls: " + str(num_of_API_call))
 		st.divider()
 		for segment in segments:
+			num_of_tokens = count_the_number_of_tokens(segment, "gpt-3.5-turbo-16k")
+#			st.write("Is Mandarin? " + str(is_mandarin(segment.strip())))
+			st.write("The number of characters: " + str(len(segment)))
+			st.write("The number of words: " + str(len(word_tokenize(segment))) + " (for English only)")
+			st.write("The number of tokens: " + str(num_of_tokens))
 			st.write(segment)
 			st.divider()
 #		st.write(args.gpt_model_type)
@@ -254,59 +261,3 @@ if __name__ == "__main__":
 	openai.api_key = "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"
 	streamlit_interface()
 	exit()
-'''
-	args = get_args()
-# Choi dataset code
-	arg1 = "4k"
-	if args.gpt_model_type.endswith("16k"):
-		arg1 = "16k"
-	elif args.gpt_model_type.endswith("4"):
-		arg1 = "gpt4"
-	arg2 = args.prevent_long_segment
-	arg3 = args.prevent_short_segment
-	file_name = args.file_name
-	file_path = "./../transcription/trans" + file_name + ".txt"
-	transcription = ""
-	with open(file_path, "r") as fp:
-		line = fp.readline()
-		while line:
-			transcription += line
-			line = fp.readline()
-	start_segmentation_time = time.time()
-	segmented_transcription = segment_workflow(transcription, args)
-	for idx, segment in enumerate(segmented_transcription):
-		print("Segment " + str(idx + 1) + ":")
-		print(segment)
-#	print("Total time segmentation takes = " + str(time.time() - start_segmentation_time) + " secs.")
-#	print(segmented_transcript)
-'''
-'''
-	transcript_dir_path = args.dir_path
-	file_names = os.listdir(transcript_dir_path)
-#	file_names.reverse()
-
-	for file_name in file_names:
-
-		trans_buf = transcript_dir_path.replace("choiDataset", "choiResult" + arg1 + arg2 + arg3 + "tshort")
-		print(trans_buf + "/" + file_name + " processing")
-		if os.path.exists(trans_buf + "/" + file_name):
-			continue
-
-		transcript = ""
-		with open(transcript_dir_path + "/" + file_name, "r") as fp:
-			line = fp.readline()
-			while line:
-				if line.startswith("===") == False:
-					transcript += line
-				line = fp.readline()
-		transcript = transcript.replace("\n", " ")
-		transcript = transcript.replace("  ", " ")	
-
-		segmented_transcript = segment_workflow(transcript, args)
-
-		transcript_des_path = transcript_dir_path.replace("choiDataset", "choiResult" + arg1 + arg2 + arg3 + "tshort")
-		with open(transcript_des_path + "/" + file_name, "w") as fp:
-			for paragraph in segmented_transcript:
-				fp.write(paragraph + "\n\n")
-
-'''

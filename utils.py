@@ -10,6 +10,7 @@ import argparse
 #from old_segmentation import segmentation
 nltk.download('punkt')
 from nltk.tokenize import sent_tokenize, word_tokenize
+import random as rd
 
 def get_args():
 	parser = argparse.ArgumentParser(description='Process some integers.')
@@ -117,6 +118,13 @@ def merge_segments_gpt_version(short_segment:str, previous_segment:str, next_seg
 			new_previous_segment = previous_segment + " " + short_segment
 			
 	return [new_previous_segment, new_next_segment]
+
+def is_mandarin(word:str):
+	for _ in range(5):
+		idx = rd.randint(0, len(word) - 1)
+		if "\u4e00" <= word[idx] <= "\u9fff":
+			return True
+	return False
 
 if __name__ == "__main__":
 #	print(read_file("./segment_prompt.txt"))
