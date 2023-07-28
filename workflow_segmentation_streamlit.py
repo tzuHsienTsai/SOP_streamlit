@@ -42,7 +42,7 @@ def find_the_longest_article_that_fits_the_len_limit_of_chatGPT(article:str, ope
 
 
 
-@retry(wait=wait_exponential(multiplier=1, min=4, max=10))
+#@retry(wait=wait_exponential(multiplier=1, min=4, max=10))
 def segment_short_article(article:str, openai_model_type:str, acceptable_len_of_gpt_input:int) -> str:
 	prompt = read_file("./segment_prompt_v2.txt")
 	prompt += article
