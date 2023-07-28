@@ -75,7 +75,7 @@ def locate_segment_start(sentence_prefix:str, article:str) -> int:
 	for start_index_of_article in range(len(article) - 1):
 		if start_index_of_article > 2 and article[start_index_of_article] in puncs:
 			head = start_index_of_article + 1
-			while article[head] == " ":
+			while head < len(article) and article[head] == " ":
 				head += 1
 		current_score = levenshtein_distance(sentence_prefix, article[start_index_of_article:start_index_of_article + len(sentence_prefix)])
 		if current_score < best_score:
@@ -247,6 +247,6 @@ def streamlit_interface():
 	return
 
 if __name__ == "__main__":
-	openai.api_key = "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"
+	openai.api_key = "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"
 	streamlit_interface()
 	exit()

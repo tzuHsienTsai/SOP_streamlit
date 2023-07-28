@@ -41,7 +41,7 @@ def find_the_longest_article_that_fits_the_len_limit_of_chatGPT(article:str, ope
 
 
 
-@retry(wait=wait_exponential(multiplier=1, min=4, max=10))
+#@retry(wait=wait_exponential(multiplier=1, min=4, max=10))
 def segment_short_article(article:str, openai_model_type:str, acceptable_len_of_gpt_input:int) -> str:
 	prompt = read_file("./segment_prompt_v2.txt")
 	prompt += article
@@ -170,25 +170,25 @@ def segment_article(article:str, openai_model_type:str, acceptable_len_of_gpt_in
 				idx += 1
 
 	global progress
-	global streamlit_progress
+#	global streamlit_progress
 	if len(segmentable_article.strip()) == len(article.strip()):
 		if prevent_long_segment == "YES":
 			progress.update(len(segmentable_article.strip()))
 			progress.set_description("Workflow segmentation")
-			streamlit_progress.update(len(segmentable_article.strip()))
-			streamlit_progress.set_description("Workflow segmentation")
+#			streamlit_progress.update(len(segmentable_article.strip()))
+#			streamlit_progress.set_description("Workflow segmentation")
 		return valid_segments
 	else:
 		if prevent_long_segment == "YES":
 			progress.update(len(article[:current_head].strip()))
 			progress.set_description("Workflow segmentation")
-			streamlit_progress.update(len(article[:current_head].strip()))
-			streamlit_progress.set_description("Workflow segmentation")
+#			streamlit_progress.update(len(article[:current_head].strip()))
+#			streamlit_progress.set_description("Workflow segmentation")
 		return valid_segments + segment_article(article[current_head:], openai_model_type, acceptable_len_of_gpt_input, prevent_long_segment, prevent_short_segment)
 
 
 progress = None
-streamlit_progress = None
+#streamlit_progress = None
 
 def segment_workflow(transcription:str, args) -> list:
 	acceptable_len_of_gpt_input = 4096
@@ -200,13 +200,13 @@ def segment_workflow(transcription:str, args) -> list:
 	global streamlit_progress
 	progress = tqdm(total=len(transcription.strip()))
 	progress.set_description("Workflow segmentation")
-	streamlit_progress = stqdm(total=len(transcription.strip()))
-	streamlit_progress.set_description("Workflow segmentation")
+#	streamlit_progress = stqdm(total=len(transcription.strip()))
+#	streamlit_progress.set_description("Workflow segmentation")
 	return segment_article(transcription, args.gpt_model_type, acceptable_len_of_gpt_input, args.prevent_long_segment, args.prevent_short_segment)
 
 
 if __name__ == "__main__":
-	openai.api_key = "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"
+	openai.api_key = "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"
 
 	args = get_args()
 

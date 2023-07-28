@@ -121,7 +121,7 @@ class arguments:
 
 
 def streamlit_app():
-	openai.api_key = "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"
+	openai.api_key = "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"
 	st.title("SOP creation Demo Site (English and Mandarin Version)")
 	st.header("Transcription")
 	transcription = st.text_area("Input:")
