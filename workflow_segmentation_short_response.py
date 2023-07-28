@@ -4,12 +4,14 @@ import sys
 from tqdm import tqdm
 import os
 import time
+import streamlit as st
 from Levenshtein import distance
 from tenacity import retry, stop_after_attempt, wait_exponential
-from utils import get_args, count_the_number_of_tokens, count_the_length_of_prompt, levenshtein_distance, reverse_string, merge_segments_gpt_version, merge_segments_text_split_version, read_file
+from utils import get_args, count_the_number_of_tokens, count_the_length_of_prompt, levenshtein_distance, reverse_string, merge_segments_gpt_version, read_file, is_mandarin
 import nltk
 import argparse
 from nltk.tokenize import sent_tokenize, word_tokenize
+from stqdm import stqdm
 #nltk.download('punkt')
 
 def find_the_longest_article_that_fits_the_len_limit_of_chatGPT(article:str, openai_model_type:str, acceptable_len_of_gpt_input:int) -> str:
@@ -68,9 +70,12 @@ def locate_segment_start(sentence_prefix:str, article:str) -> int:
 	best_score = len(sentence_prefix)
 	best_score_position = -1
 	head = 0
+	puncs = [".", "!", "?", "。", "！", "？"]
 	for start_index_of_article in range(len(article) - 1):
-		if start_index_of_article > 2 and article[start_index_of_article] == "." and article[start_index_of_article + 1] == " ":
-			head = start_index_of_article + 2
+		if start_index_of_article > 2 and article[start_index_of_article] in puncs:
+			head = start_index_of_article + 1
+			while head < len(article) and article[head] == " ":
+				head += 1
 		current_score = levenshtein_distance(sentence_prefix, article[start_index_of_article:start_index_of_article + len(sentence_prefix)])
 		if current_score < best_score:
 			best_score = current_score
@@ -90,10 +95,12 @@ def extract_the_head_of_paragraphs(segmented_article:str) -> list:
 			sentences_prefix.append(prefix)
 	return sentences_prefix
 
-
+num_of_API_call = 0
 
 def segment_article(article:str, openai_model_type:str, acceptable_len_of_gpt_input:int, prevent_long_segment:str, prevent_short_segment:str)->list:
 	segmentable_article = find_the_longest_article_that_fits_the_len_limit_of_chatGPT(article, openai_model_type, acceptable_len_of_gpt_input)
+	global num_of_API_call
+	num_of_API_call += 1
 	segmented_article = segment_short_article(segmentable_article, openai_model_type, acceptable_len_of_gpt_input)
 	sentences_prefix = extract_the_head_of_paragraphs(segmented_article)
 #	if prevent_long_segment == "NO":
@@ -108,7 +115,7 @@ def segment_article(article:str, openai_model_type:str, acceptable_len_of_gpt_in
 		if idx == 0:
 			continue
 		current_head = last_head + locate_segment_start(sentence_prefix, article[last_head:])
-		print(current_head, file=sys.stderr)
+#		print(current_head, file=sys.stderr)
 		segment = article[last_head:current_head].strip()
 		if len(segment) > 0:
 			valid_segments.append(segment)
@@ -124,13 +131,14 @@ def segment_article(article:str, openai_model_type:str, acceptable_len_of_gpt_in
 		segment_idx = 0
 		while segment_idx < len(valid_segments):
 			segment = valid_segments[segment_idx]
-			if len(word_tokenize(segment)) > 700:
+			if (len(word_tokenize(segment)) > 700 and is_mandarin(segment.strip()) == False) or (len(segment) > 860 and is_mandarin(segment.strip()) == True):
 				split_once_more_segments = segment_article(segment,\
 														openai_model_type,\
 														acceptable_len_of_gpt_input,\
 														"NO",\
 														prevent_short_segment,\
 														)
+				num_of_API_call += 1
 				for idx in range(len(split_once_more_segments)):
 					while idx < len(split_once_more_segments)\
 							and len(split_once_more_segments[idx]) == 0:
@@ -142,7 +150,7 @@ def segment_article(article:str, openai_model_type:str, acceptable_len_of_gpt_in
 	if prevent_short_segment == "YES":
 		idx = 0
 		while idx < len(valid_segments) and len(valid_segments) > 1:
-			if len(word_tokenize(valid_segments[idx])) < 70 and len(word_tokenize(valid_segments[idx])) * 3 <= len(word_tokenize(segmentable_article)):
+			if (len(word_tokenize(valid_segments[idx])) < 70 and len(word_tokenize(valid_segments[idx])) * 3 <= len(word_tokenize(segmentable_article)) and is_mandarin(valid_segments[idx].strip()) == False) or (len(valid_segments[idx]) < 86 and len(valid_segments[idx]) * 3 <= len(segmentable_article) and is_mandarin(valid_segments[idx].strip()) == True):
 				if idx == 0:
 					new_segment = valid_segments[idx] + " " + valid_segments[1]
 					valid_segments = [new_segment] + valid_segments[2:]
@@ -157,23 +165,30 @@ def segment_article(article:str, openai_model_type:str, acceptable_len_of_gpt_in
 #																)
 																openai_model_type)
 					valid_segments = valid_segments[:idx - 1] + merge_result + valid_segments[idx + 2:]
+					num_of_API_call += 1
 			else:
 				idx += 1
-	global progress
 
+	global progress
+	global streamlit_progress
 	if len(segmentable_article.strip()) == len(article.strip()):
 		if prevent_long_segment == "YES":
 			progress.update(len(segmentable_article.strip()))
 			progress.set_description("Workflow segmentation")
+			streamlit_progress.update(len(segmentable_article.strip()))
+			streamlit_progress.set_description("Workflow segmentation")
 		return valid_segments
 	else:
 		if prevent_long_segment == "YES":
 			progress.update(len(article[:current_head].strip()))
 			progress.set_description("Workflow segmentation")
+			streamlit_progress.update(len(article[:current_head].strip()))
+			streamlit_progress.set_description("Workflow segmentation")
 		return valid_segments + segment_article(article[current_head:], openai_model_type, acceptable_len_of_gpt_input, prevent_long_segment, prevent_short_segment)
 
 
 progress = None
+streamlit_progress = None
 
 def segment_workflow(transcription:str, args) -> list:
 	acceptable_len_of_gpt_input = 4096
@@ -182,10 +197,12 @@ def segment_workflow(transcription:str, args) -> list:
 	elif args.gpt_model_type.endswith("4"):
 		acceptable_len_of_gpt_input = 8192
 	global progress
+	global streamlit_progress
 	progress = tqdm(total=len(transcription.strip()))
 	progress.set_description("Workflow segmentation")
+	streamlit_progress = stqdm(total=len(transcription.strip()))
+	streamlit_progress.set_description("Workflow segmentation")
 	return segment_article(transcription, args.gpt_model_type, acceptable_len_of_gpt_input, args.prevent_long_segment, args.prevent_short_segment)
-
 
 
 if __name__ == "__main__":

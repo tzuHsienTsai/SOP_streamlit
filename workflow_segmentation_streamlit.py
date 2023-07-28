@@ -12,6 +12,7 @@ import nltk
 import argparse
 from nltk.tokenize import sent_tokenize, word_tokenize
 from stqdm import stqdm
+#from workflow_segmentation_short_response import segment_workflow
 #nltk.download('punkt')
 
 def find_the_longest_article_that_fits_the_len_limit_of_chatGPT(article:str, openai_model_type:str, acceptable_len_of_gpt_input:int) -> str:
@@ -213,21 +214,7 @@ class arguments:
 def trans_preprocessing(transcription:str) -> str:
 	new_transcription = transcription.replace("\n", " ")
 	new_transcription = transcription.replace("  ", " ")
-
-	sentences = sent_tokenize(transcription)
-	sentence_len = -1
-	for sentence in sentences:
-		sentence_len += len(sentence) + 1
-	
-	if sentence_len == len(transcription):
-		return transcription
-	else:
-		new_transcription = ""
-		for sentence in sentences:
-			if len(new_transcription) > 0:
-				new_transcription += " "
-			new_transcription += sentence
-		return new_transcription
+	return new_transcription
 
 
 def streamlit_interface():
