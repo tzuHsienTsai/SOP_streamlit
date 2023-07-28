@@ -42,7 +42,7 @@ def find_the_longest_article_that_fits_the_len_limit_of_chatGPT(article:str, ope
 
 
 
-#@retry(wait=wait_exponential(multiplier=1, min=4, max=10))
+@retry(wait=wait_exponential(multiplier=1, min=4, max=10))
 def segment_short_article(article:str, openai_model_type:str, acceptable_len_of_gpt_input:int) -> str:
 	prompt = read_file("./segment_prompt_v2.txt")
 	prompt += article
@@ -84,6 +84,7 @@ def locate_segment_start(sentence_prefix:str, article:str) -> int:
 	return best_score_position
 
 
+num_of_API_call = 0
 
 def extract_the_head_of_paragraphs(segmented_article:str) -> list:
 	lines = segmented_article.split("\n")
@@ -95,8 +96,6 @@ def extract_the_head_of_paragraphs(segmented_article:str) -> list:
 				prefix = prefix[:-1]
 			sentences_prefix.append(prefix)
 	return sentences_prefix
-
-num_of_API_call = 0
 
 def segment_article(article:str, openai_model_type:str, acceptable_len_of_gpt_input:int, prevent_long_segment:str, prevent_short_segment:str)->list:
 	segmentable_article = find_the_longest_article_that_fits_the_len_limit_of_chatGPT(article, openai_model_type, acceptable_len_of_gpt_input)
